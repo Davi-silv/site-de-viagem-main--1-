@@ -194,9 +194,10 @@
         <div class="container">
             <h2>Receba Nossas Ofertas</h2>
             <p>Cadastre-se para receber as melhores ofertas de viagens!</p>
-            <form class="newsletter-form" action="newsletter.php" method="POST">
+            <form class="newsletter-form" id="newsletter-form" action="#" method="POST">
                 <input type="email" name="email" placeholder="Seu melhor e-mail" required>
                 <button type="submit">Inscrever-se</button>
+                <div id="newsletter-feedback" style="margin-top:0.5rem;text-align:center;"></div>
             </form>
         </div>
     </section>
@@ -240,6 +241,29 @@
     </footer>
 
     <script src="css/js/script.js"></script>
+    <script>
+    document.getElementById('newsletter-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const feedback = document.getElementById('newsletter-feedback');
+        feedback.textContent = 'Enviando...';
+        const formData = new FormData(form);
+        const dataObj = Object.fromEntries(formData.entries());
+        const res = await fetch('/api/newsletter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataObj)
+        });
+        const data = await res.json();
+        feedback.textContent = data.msg;
+        if (data.success) {
+            feedback.style.color = 'green';
+            form.reset();
+        } else {
+            feedback.style.color = 'red';
+        }
+    });
+    </script>
 </body>
 
 </html>

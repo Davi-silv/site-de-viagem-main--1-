@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin - TravelWorld</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+  <style>
+    .admin-login { max-width: 350px; margin: 100px auto; text-align: center; }
+    .admin-login input { padding: 10px; width: 100%; margin-bottom: 10px; }
+    .admin-login button { padding: 10px 20px; }
+    .admin-content { max-width: 1200px; margin: 40px auto; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #2196F3; color: #fff; }
+    h2 { margin-top: 40px; }
+    .logout { float: right; }
+    .filter-bar { margin-bottom: 10px; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .filter-bar input { padding: 6px; border-radius: 4px; border: 1px solid #ccc; }
+    .export-btn { background: #FFA000; color: #fff; border: none; border-radius: 4px; padding: 8px 16px; cursor: pointer; }
+    .export-btn:hover { background: #ff8800; }
+  </style>
+</head>
+<body>
+  <div id="admin-app">
+    <div class="admin-login" id="login-box">
+      <h2>Login Admin</h2>
+      <input type="password" id="admin-token" placeholder="Senha de admin" required>
+      <button onclick="loginAdmin()">Entrar</button>
+      <div id="login-feedback" style="color:red;margin-top:10px;"></div>
+    </div>
+    <div class="admin-content" id="admin-content" style="display:none;">
+      <button class="logout" onclick="logoutAdmin()">Sair</button>
+      <h1>Reservas de Destinos</h1>
+      <div class="filter-bar">
+        <input type="text" id="filtro-destino-nome" placeholder="Filtrar por nome">
+        <input type="text" id="filtro-destino-email" placeholder="Filtrar por e-mail">
+        <input type="text" id="filtro-destino-destino" placeholder="Filtrar por destino">
+        <button class="export-btn" onclick="exportarCSV('destinos')">Exportar CSV</button>
+      </div>
+      <table id="tabela-destinos">
+        <thead>
+          <tr><th>ID</th><th>Nome</th><th>Email</th><th>Destino</th><th>Data Ida</th><th>Data Volta</th><th>Passageiros</th><th>Data Reserva</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <h1>Reservas de Hotéis</h1>
+      <div class="filter-bar">
+        <input type="text" id="filtro-hotel-nome" placeholder="Filtrar por nome">
+        <input type="text" id="filtro-hotel-email" placeholder="Filtrar por e-mail">
+        <input type="text" id="filtro-hotel-hotel" placeholder="Filtrar por hotel">
+        <button class="export-btn" onclick="exportarCSV('hoteis')">Exportar CSV</button>
+      </div>
+      <table id="tabela-hoteis">
+        <thead>
+          <tr><th>ID</th><th>Nome</th><th>Email</th><th>Hotel</th><th>Check-in</th><th>Check-out</th><th>Hóspedes</th><th>Data Reserva</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    let reservasData = { destinos: [], hoteis: [] };
+    function loginAdmin() {
+      const token = document.getElementById('admin-token').value;
+      if (!token) return;
+      localStorage.setItem('adminToken', token);
+      loadReservas();
+    }
+    function logoutAdmin() {
+      localStorage.removeItem('adminToken');
+      document.getElementById('admin-content').style.display = 'none';
+      document.getElementById('login-box').style.display = 'block';
+    }
+    async function loadReservas() {
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
+      document.getElementById('login-box').style.display = 'none';
+      document.getElementById('admin-content').style.display = 'block';
+      try {
+        const res = await fetch('/api/admin-reservas', {
+          headers: { 'x-admin-token': token }
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.msg);
+        reservasData.destinos = data.destinos;
+        reservasData.hoteis = data.hoteis;
+        renderTabelas();
+        addFilterListeners();
+      } catch (err) {
+        document.getElementById('admin-content').style.display = 'none';
+        document.getElementById('login-box').style.display = 'block';
+        document.getElementById('login-feedback').textContent = 'Acesso negado ou erro: ' + err.message;
+      }
+    }
+    function renderTabelas() {
+      // Destinos
+      const nome = document.getElementById('filtro-destino-nome').value.toLowerCase();
+      const email = document.getElementById('filtro-destino-email').value.toLowerCase();
+      const destino = document.getElementById('filtro-destino-destino').value.toLowerCase();
+      const filtradosDest = reservasData.destinos.filter(r =>
+        r.nome.toLowerCase().includes(nome) &&
+        r.email.toLowerCase().includes(email) &&
+        r.destino.toLowerCase().includes(destino)
+      );
+      const tbodyDest = document.querySelector('#tabela-destinos tbody');
+      tbodyDest.innerHTML = filtradosDest.map(r => `<tr><td>${r.id}</td><td>${r.nome}</td><td>${r.email}</td><td>${r.destino}</td><td>${r.data_ida}</td><td>${r.data_volta}</td><td>${r.passageiros}</td><td>${r.data_reserva}</td></tr>`).join('');
+      // Hotéis
+      const nomeH = document.getElementById('filtro-hotel-nome').value.toLowerCase();
+      const emailH = document.getElementById('filtro-hotel-email').value.toLowerCase();
+      const hotel = document.getElementById('filtro-hotel-hotel').value.toLowerCase();
+      const filtradosHot = reservasData.hoteis.filter(r =>
+        r.nome.toLowerCase().includes(nomeH) &&
+        r.email.toLowerCase().includes(emailH) &&
+        r.hotel.toLowerCase().includes(hotel)
+      );
+      const tbodyHot = document.querySelector('#tabela-hoteis tbody');
+      tbodyHot.innerHTML = filtradosHot.map(r => `<tr><td>${r.id}</td><td>${r.nome}</td><td>${r.email}</td><td>${r.hotel}</td><td>${r.checkin}</td><td>${r.checkout}</td><td>${r.hospedes}</td><td>${r.data_reserva}</td></tr>`).join('');
+    }
+    function addFilterListeners() {
+      ['filtro-destino-nome','filtro-destino-email','filtro-destino-destino','filtro-hotel-nome','filtro-hotel-email','filtro-hotel-hotel'].forEach(id => {
+        document.getElementById(id).oninput = renderTabelas;
+      });
+    }
+    function exportarCSV(tipo) {
+      let rows = [];
+      if (tipo === 'destinos') {
+        rows = reservasData.destinos.map(r => [r.id, r.nome, r.email, r.destino, r.data_ida, r.data_volta, r.passageiros, r.data_reserva]);
+        rows.unshift(['ID','Nome','Email','Destino','Data Ida','Data Volta','Passageiros','Data Reserva']);
+      } else {
+        rows = reservasData.hoteis.map(r => [r.id, r.nome, r.email, r.hotel, r.checkin, r.checkout, r.hospedes, r.data_reserva]);
+        rows.unshift(['ID','Nome','Email','Hotel','Check-in','Check-out','Hóspedes','Data Reserva']);
+      }
+      const csv = rows.map(row => row.map(val => '"'+String(val).replace(/"/g,'""')+'"').join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = tipo+"-reservas.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    // Auto-login se token salvo
+    if (localStorage.getItem('adminToken')) loadReservas();
+  </script>
+</body>
+</html> 

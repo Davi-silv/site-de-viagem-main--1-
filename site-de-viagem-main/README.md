@@ -8,16 +8,18 @@ TravelWorld é um projeto completo de site de viagens, desenvolvido para proporc
 - **Hotéis em destaque** e **ofertas de voos**
 - **Newsletter** com cadastro de e-mails (armazenamento em MySQL)
 - **Reserva de destinos** e **reserva de hotéis** com formulários modernos
-- **Painel administrativo** protegido por senha para visualizar todas as reservas
+- **Painel administrativo** (em desenvolvimento para Node.js)
 - **Envio automático de e-mail de confirmação** ao usuário após reserva
 - **Validação e feedback dinâmico** nos formulários (AJAX)
 - **Design responsivo** e visual profissional
+- **Back-end Node.js/Express compatível com Vercel (serverless)**
 
 ## 🛠️ Tecnologias Utilizadas
 - **HTML5** e **CSS3** (com Flexbox, Grid e responsividade)
 - **JavaScript** (autocomplete, validação, AJAX)
-- **PHP** (back-end, integração com banco, envio de e-mails)
+- **Node.js** (Express-style, serverless functions para Vercel)
 - **MySQL** (armazenamento de reservas e newsletter)
+- **Nodemailer** (envio de e-mails)
 - **Font Awesome** (ícones)
 - **Google Fonts** (Montserrat)
 
@@ -29,14 +31,16 @@ site-de-viagem-main/
 │   ├── style.css          # Estilos principais
 │   └── js/
 │       └── script.js      # Scripts JS do site
+├── api/                   # Endpoints Node.js para Vercel
+│   ├── reserva-destino.js
+│   ├── reserva-hotel.js
+│   └── newsletter.js
+├── db.js                  # Conexão com MySQL
+├── package.json           # Dependências Node.js
+├── .env.example           # Exemplo de variáveis de ambiente
 ├── index.html             # Página inicial
 ├── reserva-destino.html   # Formulário de reserva de destino
 ├── reserva-hotel.html     # Formulário de reserva de hotel
-├── reserva-destino.php    # Processa reserva de destino
-├── reserva-hotel.php      # Processa reserva de hotel
-├── db.php                 # Conexão com MySQL
-├── newsletter.php         # Cadastro de newsletter
-├── admin-reservas.php     # Painel administrativo
 └── README.md              # Este arquivo
 ```
 
@@ -73,27 +77,34 @@ site-de-viagem-main/
          data_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP
      );
      ```
-3. **Configure o acesso ao banco em `db.php`:**
-   - Edite usuário, senha e nome do banco conforme seu ambiente.
-4. **Personalize o e-mail do remetente e senha do admin em `admin-reservas.php`:**
-   - Altere as variáveis `$admin_email` e `$admin_senha` no topo do arquivo.
-5. **Hospede os arquivos em um servidor com suporte a PHP e MySQL** (ex: XAMPP, WAMP, LAMP, hospedagem web)
+3. **Configure as variáveis de ambiente** (no painel da Vercel ou arquivo `.env` local):
+   - DB_HOST, DB_USER, DB_PASS, DB_NAME
+   - SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_FROM
+   - Veja `.env.example` para referência
+4. **Instale as dependências Node.js:**
+   ```bash
+   npm install
+   ```
+5. **Faça o deploy para a Vercel:**
+   - O projeto já está pronto para serverless (pasta `api/`)
+   - Configure as variáveis de ambiente no painel da Vercel
+   - Deploy automático pelo Git ou upload manual
 6. **Acesse o site pelo navegador:**
    - `index.html` para o público
-   - `admin-reservas.php` para o painel admin (senha definida por você)
+   - Reservas e newsletter funcionam via endpoints `/api/`
 
 ## 🔒 Segurança
-- O painel admin é protegido por senha simples. Para produção, recomenda-se implementar autenticação mais robusta.
-- Os dados dos formulários são validados no front-end (JavaScript) e no back-end (PHP).
+- Os dados dos formulários são validados no front-end (JavaScript) e no back-end (Node.js).
+- Recomenda-se proteger endpoints administrativos e variáveis sensíveis.
 
 ## ✉️ E-mail de Confirmação
 - O usuário recebe um e-mail automático após realizar uma reserva.
-- O e-mail de remetente pode ser personalizado em `admin-reservas.php` e nos scripts PHP.
+- O e-mail de remetente é configurado via variável de ambiente `SMTP_FROM`.
 - Para funcionar em ambiente local, pode ser necessário configurar um servidor SMTP ou usar hospedagem real.
 
 ## 💡 Personalização
 - Adicione mais destinos, hotéis e funcionalidades conforme desejar.
-- Expanda o painel admin para editar/excluir reservas.
+- Expanda o painel admin para editar/excluir reservas (em desenvolvimento para Node.js).
 - Integre com APIs de voos/hotéis para dados reais.
 
 ## 👨‍💻 Autor

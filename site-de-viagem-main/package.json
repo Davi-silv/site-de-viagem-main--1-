@@ -1,0 +1,13 @@
+{
+  "name": "site-de-viagem-main",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "mysql2": "^3.9.7",
+    "nodemailer": "^6.9.11"
+  }
+} 

@@ -24,7 +24,7 @@
     </header>
     <section class="container" style="margin-top:120px;max-width:500px;">
         <h2 style="text-align:center;">Reserva de Destino</h2>
-        <form class="reserva-form" id="form-reserva-destino" method="POST" action="reserva-destino.php">
+        <form class="reserva-form" id="form-reserva-destino" method="POST" action="#">
             <div class="form-group" style="flex-direction:column;gap:1.2rem;">
                 <input type="text" name="nome" placeholder="Nome completo" required>
                 <input type="email" name="email" placeholder="E-mail" required>
@@ -49,9 +49,11 @@
         const feedback = document.getElementById('feedback-reserva-destino');
         feedback.textContent = 'Enviando...';
         const formData = new FormData(form);
-        const res = await fetch('reserva-destino.php', {
+        const dataObj = Object.fromEntries(formData.entries());
+        const res = await fetch('/api/reserva-destino', {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataObj)
         });
         const data = await res.json();
         feedback.textContent = data.msg;
