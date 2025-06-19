@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelWorld - Sua Agência de Viagens Online</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="assets/images/logo.svg" alt="TravelWorld Logo" class="logo-image">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#destinos">Destinos</a></li>
+                <li><a href="#hoteis">Hotéis</a></li>
+                <li><a href="#voos">Voos</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Descubra o Mundo com a TravelWorld</h1>
+            <p>Sua próxima aventura começa aqui!</p>
+            <div class="search-box">
+                <input type="text" placeholder="Para onde você quer ir?">
+                <button>Buscar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-tabs">
+                <button class="tab-btn active" data-tab="voos">Voos</button>
+                <button class="tab-btn" data-tab="hoteis">Hotéis</button>
+                <button class="tab-btn" data-tab="pacotes">Pacotes</button>
+            </div>
+            <div class="search-content">
+                <form id="search-form" autocomplete="off">
+                    <div class="form-group">
+                        <div style="position:relative;">
+                            <input type="text" id="input-origem" placeholder="Origem">
+                            <div id="sugestoes-origem" class="autocomplete-suggestions"></div>
+                        </div>
+                        <div style="position:relative;">
+                            <input type="text" id="input-destino" placeholder="Destino">
+                            <div id="sugestoes-destino" class="autocomplete-suggestions"></div>
+                        </div>
+                        <input type="date" placeholder="Data de ida" aria-label="Data de ida">
+                        <input type="date" placeholder="Data de volta" aria-label="Data de volta">
+                        <select aria-label="Número de passageiros" title="Número de passageiros" name="passengers">
+                            <option value="">Passageiros</option>
+                            <option value="1">1 Passageiro</option>
+                            <option value="2">2 Passageiros</option>
+                            <option value="3">3+ Passageiros</option>
+                        </select>
+                        <button type="submit">Pesquisar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinos Populares -->
+    <section id="destinos" class="destinations">
+        <h2>Destinos Populares</h2>
+        <div class="container">
+            <div class="destination-grid">
+                <div class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325" alt="Rio de Janeiro">
+                    <div class="destination-info">
+                        <h3>Rio de Janeiro</h3>
+                        <p>Brasil</p>
+                        <p class="price">A partir de R$ 799</p>
+                        <button onclick="verOfertas('Rio de Janeiro')">Ver Ofertas</button>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" alt="Paris">
+                    <div class="destination-info">
+                        <h3>Paris</h3>
+                        <p>França</p>
+                        <p class="price">A partir de R$ 3.999</p>
+                        <button onclick="verOfertas('Paris')">Ver Ofertas</button>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9" alt="Nova York">
+                    <div class="destination-info">
+                        <h3>Nova York</h3>
+                        <p>EUA</p>
+                        <p class="price">A partir de R$ 4.299</p>
+                        <button onclick="verOfertas('Nova York')">Ver Ofertas</button>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <img src="https://media.istockphoto.com/id/1390815938/pt/foto/tokyo-city-in-japan.jpg?s=612x612&w=0&k=20&c=HXnA0iJ6pCDJQPbK5tYeY5s740NStkgFf5U-ZhIImoY="
+                        alt="Tóquio">
+                    <div class="destination-info">
+                        <h3>Tóquio</h3>
+                        <p>Japão</p>
+                        <p class="price">A partir de R$ 5.499</p>
+                        <button onclick="verOfertas('Tóquio')">Ver Ofertas</button>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Sydney_Opera_House_-_Dec_2008.jpg/640px-Sydney_Opera_House_-_Dec_2008.jpg"
+                        alt="Sydney">
+                    <div class="destination-info">
+                        <h3>Sydney</h3>
+                        <p>Austrália</p>
+                        <p class="price">A partir de R$ 6.299</p>
+                        <button onclick="verOfertas('Sydney')">Ver Ofertas</button>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <img src="https://media.staticontent.com/media/pictures/08223d5a-e691-4b1b-9e90-5d3008b09335"
+                        alt="Dubai">
+                    <div class="destination-info">
+                        <h3>Dubai</h3>
+                        <p>Emirados Árabes</p>
+                        <p class="price">A partir de R$ 4.899</p>
+                        <button onclick="verOfertas('Dubai')">Ver Ofertas</button>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <img src="https://www.guiadasemana.com.br/contentFiles/image/opt_w1280h960/2019/05/FEA/63743_shutterstock-147643964-coliseu.jpg"
+                        alt="Roma">
+                    <div class="destination-info">
+                        <h3>Roma</h3>
+                        <p>Itália</p>
+                        <p class="price">A partir de R$ 3.799</p>
+                        <button onclick="verOfertas('Roma')">Ver Ofertas</button>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <img src="https://www.viajaquepassa.com.br/wp-content/uploads/zona-hoteleira-cancun.jpg"
+                        alt="Cancún">
+                    <div class="destination-info">
+                        <h3>Cancún</h3>
+                        <p>México</p>
+                        <p class="price">A partir de R$ 2.999</p>
+                        <button onclick="verOfertas('Cancún')">Ver Ofertas</button>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <img src="https://cdn.visitportugal.com/sites/www.visitportugal.com/files/mediateca/TAP_PracaComercio_01e_CL-co.jpg"
+                        alt="Lisboa">
+                    <div class="destination-info">
+                        <h3>Lisboa</h3>
+                        <p>Portugal</p>
+                        <p class="price">A partir de R$ 3.599</p>
+                        <button onclick="verOfertas('Lisboa')">Ver Ofertas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Hotéis -->
+    <section id="hoteis" class="hotels">
+        <h2>Hotéis em Destaque</h2>
+        <div class="container">
+            <div class="hotel-grid">
+                <!-- Hotel cards will be added dynamically via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Voos -->
+    <section id="voos" class="flights">
+        <h2>Ofertas de Voos</h2>
+        <div class="container">
+            <div class="flight-deals">
+                <!-- Flight deals will be added dynamically via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Receba Nossas Ofertas</h2>
+            <p>Cadastre-se para receber as melhores ofertas de viagens!</p>
+            <form class="newsletter-form" action="newsletter.php" method="POST">
+                <input type="email" name="email" placeholder="Seu melhor e-mail" required>
+                <button type="submit">Inscrever-se</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sobre Nós</h3>
+                    <p>A TravelWorld é sua parceira para descobrir os melhores destinos e criar memórias inesquecíveis.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h3>Links Úteis</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#destinos">Destinos</a></li>
+                        <li><a href="#hoteis">Hotéis</a></li>
+                        <li><a href="#voos">Voos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <p>Email:davi.benigo@gmail.com</p>
+                    <p>Telefone: (22) 999355329</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Redes Sociais</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TravelWorld. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="css/js/script.js"></script>
+</body>
+
+</html>

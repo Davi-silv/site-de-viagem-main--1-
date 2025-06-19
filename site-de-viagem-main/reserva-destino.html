@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Destino | TravelWorld</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="assets/images/logo.svg" alt="TravelWorld Logo" class="logo-image">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#destinos">Destinos</a></li>
+                <li><a href="index.html#hoteis">Hotéis</a></li>
+                <li><a href="index.html#voos">Voos</a></li>
+                <li><a href="index.html#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="container" style="margin-top:120px;max-width:500px;">
+        <h2 style="text-align:center;">Reserva de Destino</h2>
+        <form class="reserva-form" id="form-reserva-destino" method="POST" action="reserva-destino.php">
+            <div class="form-group" style="flex-direction:column;gap:1.2rem;">
+                <input type="text" name="nome" placeholder="Nome completo" required>
+                <input type="email" name="email" placeholder="E-mail" required>
+                <input type="text" name="destino" placeholder="Destino" required>
+                <input type="date" name="data_ida" placeholder="Data de ida" required>
+                <input type="date" name="data_volta" placeholder="Data de volta" required>
+                <select name="passageiros" required>
+                    <option value="">Passageiros</option>
+                    <option value="1">1 Passageiro</option>
+                    <option value="2">2 Passageiros</option>
+                    <option value="3">3+ Passageiros</option>
+                </select>
+                <button type="submit">Reservar</button>
+            </div>
+            <div id="feedback-reserva-destino" style="margin-top:1rem;text-align:center;"></div>
+        </form>
+    </section>
+    <script>
+    document.getElementById('form-reserva-destino').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const feedback = document.getElementById('feedback-reserva-destino');
+        feedback.textContent = 'Enviando...';
+        const formData = new FormData(form);
+        const res = await fetch('reserva-destino.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        feedback.textContent = data.msg;
+        if (data.success) {
+            feedback.style.color = 'green';
+            form.reset();
+        } else {
+            feedback.style.color = 'red';
+        }
+    });
+    </script>
+</body>
+</html> 
